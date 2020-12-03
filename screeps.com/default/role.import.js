@@ -1,5 +1,7 @@
 var w_util = require('worker.utilitys')
 
+var container_min_hits = 50000
+
 var flag = Game.flags['Flag1']
 // set creep.memory.sauce on spawn
 
@@ -69,14 +71,14 @@ var roleImport = {
             case 'mine':
                 if(creep.store.getFreeCapacity() > 4){
                     w_util.mine(creep, Game.getObjectById(creep.memory.sauce))
+                } else if(creep.memory.task != 'run' && creep.store.getUsedCapacity() > 0 && containers.length > 0 && containers[0].hits < container_min_hits){
+                    creep.memory.task = 'repair'
+                    w_util.repair(creep, containers[0])
                 } else {
                     var constructions = creep.room.find(FIND_CONSTRUCTION_SITES)
                     if(constructions.length > 0){
                         creep.memory.task = 'build'
                         w_util.build(creep, constructions)
-                    } else if(containers.length > 0 && containers[0].hits < 500){
-                        creep.task = 'repair'
-                        w_util.repair(containers[0])
                     } else {
                         creep.memory.task = 'store'
                         w_util.store(creep, containers)
@@ -119,16 +121,20 @@ var roleImport = {
                 break
 
             case 'repair':
-                if(containers.length > 0 && containers[0].hits < 2000 && creep.getUsedCapacity > 0){
+                if(containers.length > 0 && containers[0].hits < container_min_hits + 5000 && creep.store.getUsedCapacity() > 0){
+                    creep.say('thinkies')
                     w_util.repair(creep, containers[0])
                 } else {
                     creep.say('mine')
                     creep.memory.task = 'mine'
                     w_util.mine(creep)
                 }
+                break
 
             default:
                 creep.memory.task = 'run'
+                creep.say('default')
+                break
         }
     }
 }
