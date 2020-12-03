@@ -8,7 +8,6 @@ var worker_utils = {
     store: function(creep, targets){
         targets = _.sortBy(targets, t => creep.pos.getRangeTo(t))
         if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-            creep.fatigue = 0
             creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ff00ff'}});
         }
     },
@@ -16,7 +15,6 @@ var worker_utils = {
     prio_store: function(creep, targets){
         targets = _.sortBy(targets, t => creep.pos.getRangeTo(t) * ((t.structureType == STRUCTURE_EXTENSION)? 1 : (t.structureType == STRUCTURE_SPAWN)? 10 : (t.structureType == STRUCTURE_STORAGE)? 100 : 1000) )
         if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-            creep.fatigue = 0
             creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ff00ff'}});
         }
     },

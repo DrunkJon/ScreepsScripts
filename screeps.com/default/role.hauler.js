@@ -2,7 +2,7 @@ var w_util = require('worker.utilitys')
 
 var roleHauler = {
     run: function(creep) {
-        //creep.say('hello' + creep.memory.task)
+        //TODO: make haulers pick up ressources from the ground and transport them to Storage
         
         var containers = creep.room.find(FIND_STRUCTURES, {
             filter: (structure) => {

@@ -21,7 +21,15 @@ module.exports.loop = function () {
     
     //tower script
     var towers = Game.spawns['Spawn1'].room.find(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_TOWER})
-    tower.run(Game.getObjectById('5fc55ebb7eb8ef1337291209'))
+    try{
+        tower.run_new(towers)
+    } catch(err){
+        for(var i in towers){
+            tower.run(towers[i])
+        }
+        console.log('!tower error: \n' + err)
+    }
+    
 
     //list of creeps organized by their role
     //remember to add new roles to this
@@ -42,6 +50,8 @@ module.exports.loop = function () {
         if(creep_catalog.hasOwnProperty(creep.memory.role) && ((creep.memory.role != 'import_harvester' && creep.memory.role != 'warrior') || creep.ticksToLive > 150) ){
             creep_catalog[creep.memory.role].push(creep)
         }
+        // TODO: if creep is fatigued, set a point for the tile it is on,
+        // if there are no constructions and points reach a threshhold, build a road on tile with most points
         
         // TODO: make creeps regen themselves if their timeolive is low (< 200)
         
@@ -82,8 +92,8 @@ module.exports.loop = function () {
     //spawn script
     try{
         spawn_routine(Game.spawns['Spawn1'], creep_catalog)
-    } catch {
-        console.log('!spawning error!')
+    } catch(err) {
+        console.log('!spawning error: \n' + err)
     }
 
 }

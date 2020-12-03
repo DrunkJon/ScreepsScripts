@@ -12,7 +12,7 @@ var roleWarrior = {
         } else {
             var enemies = creep.room.find(FIND_HOSTILE_CREEPS)
             if(enemies.length > 0){
-                enemies = _.sortBy(enemies, (e) => tower.pos.getRangeTo(e) )
+                enemies = _.sortBy(enemies, (e) => creep.pos.getRangeTo(e) )
                 if(creep.attack(enemies[0]) === ERR_NOT_IN_RANGE){
                     creep.moveTo(enemies[0])
                 }

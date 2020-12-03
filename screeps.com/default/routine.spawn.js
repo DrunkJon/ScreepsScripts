@@ -12,10 +12,10 @@ var reboot_template = [WORK,CARRY,MOVE,MOVE]
 // these determine how many of each role get spawned
 var harvester_min = 6
 var harvesters_on_1 = 3
-var upgrader_min = 2
+var upgrader_min = 3
 var hauler_min = 4
 var import_harvester_min = 1
-var import_runner_min = 3
+var import_runner_min = 2
 var warrior_min = 2
 var warriors_on_1 = 1
 

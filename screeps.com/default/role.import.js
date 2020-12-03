@@ -30,7 +30,12 @@ var roleImport = {
                     creep.moveTo(Game.getObjectById('5fc51cb068cc387a2256d7c3'))
                 } else {
                     if(creep.store.getUsedCapacity() > 0){
-                        w_util.store(creep, [Game.getObjectById('5fc51cb068cc387a2256d7c3')])
+                        var containers = creep.room.find(FIND_STRUCTURES, {
+                            filter: (structure) => {
+                                return (structure.structureType == STRUCTURE_CONTAINER) && structure.store.getUsedCapacity(RESOURCE_ENERGY) > 0
+                            }
+                        });
+                        w_util.store(creep, containers)
                     } else {
                         creep.memory.worth += creep.store.getCapacity()
                         creep.memory.task = 'run'
@@ -46,8 +51,8 @@ var roleImport = {
 
     harvester: function(creep){
 
-        var containers = creep.room.find(FIND_STRUCTURES, {filter: (s) => s.structuerType == STRUCTURE_CONTAINER})
-        container = _.sortBy(containers, (s)=> creep.pos.getRangeTo(s))
+        var containers = creep.room.find(FIND_STRUCTURES, {filter: (s) => s.structureType == STRUCTURE_CONTAINER})
+        containers = _.sortBy(containers, (s)=> creep.pos.getRangeTo(s))
         
         switch(creep.memory.task){
 
@@ -69,7 +74,7 @@ var roleImport = {
                     if(constructions.length > 0){
                         creep.memory.task = 'build'
                         w_util.build(creep, constructions)
-                    } else if(containers[0].hits < 200){
+                    } else if(containers.length > 0 && containers[0].hits < 500){
                         creep.task = 'repair'
                         w_util.repair(containers[0])
                     } else {
@@ -114,7 +119,7 @@ var roleImport = {
                 break
 
             case 'repair':
-                if(containers[0].hits < 2000 && creep.getUsedCapacity > 0){
+                if(containers.length > 0 && containers[0].hits < 2000 && creep.getUsedCapacity > 0){
                     w_util.repair(creep, containers[0])
                 } else {
                     creep.say('mine')
