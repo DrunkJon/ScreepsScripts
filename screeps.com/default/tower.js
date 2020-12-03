@@ -41,7 +41,7 @@ var tower = {
 
             tower_list.forEach( tower => {
                 if(tower_tasks[tower.id].length > 0){
-                    close_repair = _.sortBy(repair_list, (r) => tower.getRangeTo(r))[0]
+                    close_repair = _.sortBy(repair_list, (r) => tower.pos.getRangeTo(r))[0]
                     tower.repair(close_repair)
                 }
             })
