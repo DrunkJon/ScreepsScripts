@@ -27,7 +27,7 @@ var tower = {
         //repair script
         else 
         {
-            let repair_list = tower_list[0].room.find(FIND_STRUCTURES, {filter: (s) => s.hits < 30000 && s.hits < s.hitsMax /2})
+            let repair_list = tower_list[0].room.find(FIND_STRUCTURES, {filter: (s) => s.hits < 35000 && s.hits < s.hitsMax /2})
             
             let tower_tasks = {}
             tower_list.forEach( tower => {
@@ -35,13 +35,13 @@ var tower = {
             })
 
             repair_list.forEach( repair => {
-                close_tower = _.sortBy(tower_list, (t) => repair.pos.getRangeTo(t))[0]
+                close_tower = repair.pos.findClosestByRange(tower_list)
                 tower_tasks[close_tower.id].push(repair)
             })
 
             tower_list.forEach( tower => {
                 if(tower_tasks[tower.id].length > 0){
-                    close_repair = _.sortBy(repair_list, (r) => tower.pos.getRangeTo(r))[0]
+                    close_repair = repair.pos.findClosestByRange(repair_list)
                     tower.repair(close_repair)
                 }
             })
