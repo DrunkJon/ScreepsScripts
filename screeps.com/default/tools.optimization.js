@@ -6,6 +6,7 @@ var toolsOptimazation = {
     schwellenwert_akzeptanz: function(start_val, eval_function, variant_function, start_schwelle, iterations, min = true){
         let old_val = start_val
         let schwelle = Math.abs(start_schwelle)
+        let dec = - schwelle / Math.floor(iterations * 0.9)
         for(var i = 0; i < iterations; i++){
             new_val = variant_function(old_val)
             console.log('iteration: ' + i + '| schwelle: ' + schwelle)
@@ -14,7 +15,7 @@ var toolsOptimazation = {
             if((min && eval_function(new_val) < eval_function(old_val) + schwelle) || (!min && eval_function(new_val) > eval_function(old_val) - schwelle)){
                 old_val = new_val
             }
-            schwelle *= 0.8
+            schwelle = (schwelle < 1)? 0 : schwelle + dec
         }
 
         return old_val

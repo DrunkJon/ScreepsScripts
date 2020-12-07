@@ -109,11 +109,19 @@ var roleImport = {
             case 'store':
                 creep.say('store')
                 if(creep.store.getUsedCapacity() > 0){
-                    var targets = creep.room.find(FIND_STRUCTURES, {
-                        filter: (structure) => (structure.structureType == STRUCTURE_CONTAINER) && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
-                    });
-                    creep.memory.task = 'store'
-                    w_util.store(creep, targets)
+                    if(containers.length > 0){
+                        var targets = creep.room.find(FIND_STRUCTURES, {
+                            filter: (structure) => (structure.structureType == STRUCTURE_CONTAINER) && structure.store.getFreeCapacity(RESOURCE_ENERGY) > 0
+                        });
+                        creep.memory.task = 'store'
+                        w_util.store(creep, targets)
+                    } else {
+                        let ret_val = creep.room.createConstructionSite(creep.pos, STRUCTURE_CONTAINER)
+                        if(ret_val === 0){
+                            console.log(creep.name + ': ' + 'created a new container')
+                            creep.memory.task = 'build'
+                        }
+                    }
                 } else {
                     creep.memory.task = 'mine'
                     w_util.mine(creep, Game.getObjectById(creep.memory.sauce))

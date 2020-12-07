@@ -8,8 +8,13 @@ var tower = require('tower')
 var spawn_routine = require('routine.spawn')
 var roleWarrior = require('role.warrior')
 var w_util = require('worker.utilitys')
+var overlord = require('room.overlord')
 
 module.exports.loop = function () {
+
+    console.log('_____________NEW_____TICK_____________' + Game.time.toString(16))
+
+    let LORD = new overlord(Game.spawns['Spawn1'].room)
     
     //clearing dead creeps memory
     for(var name in Memory.creeps) {
@@ -39,7 +44,8 @@ module.exports.loop = function () {
         upgrader: [],
         import_harvester: [],
         import_runner: [],
-        warrior: []
+        warrior: [],
+        allrounder: []
     }
 
     // execute role code & build creep_catalog
@@ -83,18 +89,20 @@ module.exports.loop = function () {
         
     }
 
-    try{
-        roleHauler.run_new(creep_catalog.hauler, verbose = true)
-        //creep_catalog.hauler.forEach(creep => {
-        //    roleHauler.run(creep)
-        //})
-    } catch(err) {
-        //console.log('!hauler error: \n' + err)
+    if(creep_catalog.hauler.length > 0){
+        try{
+            roleHauler.run_new(creep_catalog.hauler, true)
+            //creep_catalog.hauler.forEach(creep => {
+            //    roleHauler.run(creep)
+            //})
+        } catch(err) {
+            console.log('!hauler error: \n' + err)
+        }
     }
 
     //spawn script
     try{
-        spawn_routine(Game.spawns['Spawn1'], creep_catalog)
+        spawn_routine(Game.spawns['Spawn1'], creep_catalog, LORD)
     } catch(err) {
         console.log('!spawning error: \n' + err)
     }

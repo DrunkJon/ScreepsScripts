@@ -47,6 +47,13 @@ var worker_utils = {
         }
     },
 
+    import_haul: function(creep){
+        let targets = _.sortBy(creep.rom.find(FIND_STRUCTURE, {filter: (s) => s.structureType === STRUCTURE_CONATINER}), (s) => creep.getRangeTo(s))
+        if(creep.withdraw(targets[0], RESOURCE_ENERGY) === ERR_NOT_IN_RANGE){
+            creep.moveTo(targets[0])
+        }
+    },
+
     single_store: function(creep, target){
         if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
             creep.moveTo(target, {visualizePathStyle: {stroke: '#ff00ff'}});

@@ -39,7 +39,8 @@ module.exports.loop = function () {
         upgrader: [],
         import_harvester: [],
         import_runner: [],
-        warrior: []
+        warrior: [],
+        allrounder: []
     }
 
     // execute role code & build creep_catalog
@@ -64,9 +65,6 @@ module.exports.loop = function () {
             case 'upgrader':
                 roleUpgrader.run(creep)
                 break
-            case 'hauler':
-                roleHauler.run(creep)
-                break
             case 'runner':
                 roleRunner.run(creep)
                 break
@@ -82,11 +80,20 @@ module.exports.loop = function () {
             case 'warrior':
                 roleWarrior.bodyguard(creep)
                 break
-            default:
-                roleHauler.run(creep)
-                break
         }
         
+    }
+
+    try{
+        roleHauler.run_new(creep_catalog.hauler, true)
+        //creep_catalog.hauler.forEach(creep => {
+        //    roleHauler.run(creep)
+        //})
+    } catch(err) {
+        creep_catalog.hauler.forEach(creep => {
+            roleHauler.run(creep)
+        })
+        console.log('!hauler error: \n' + err)
     }
 
     //spawn script
@@ -96,4 +103,12 @@ module.exports.loop = function () {
         console.log('!spawning error: \n' + err)
     }
 
+
+    try{
+        if(Game.cpu.bucket === 10000){
+            Game.cpu.generatePixel()
+        }
+    } catch(err) {
+        console.log('!pixel_gen error: \n' + err)
+    }
 }

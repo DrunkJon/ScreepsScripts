@@ -1,5 +1,11 @@
 var w_util = require('worker.utilitys')
 
+function reassign(creep, task, busy_val){
+    creep.say(task)
+    creep.memory.task = task
+    creep.memory.busy = busy_val
+}
+
 var roleHauler = {
     run: function(creep) {
         //TODO: make haulers pick up ressources from the ground and transport them to Storage
@@ -94,10 +100,23 @@ var roleHauler = {
         })
 
         
-        let valid_tombs = room.find(FIND_TOMBSTONES, {filer: (t) => t.store.getUsedCapacity() > 0})
+        let tombs = room.find(FIND_TOMBSTONES, {filer: (t) => t.store.getUsedCapacity() > 0})
+        let valid_tombs = []
+        tombs.forEach( tomb => {
+            if(tomb.store.getUsedCapacity() > 0){
+                valid_tombs.push(tomb)
+                console.log(tomb.id + ': ' + tomb.store.getUsedCapacity())  
+            } 
+        })
         let valid_ruins = room.find(FIND_RUINS, {filter: (r) => r.store.getUsedCapacity() > 0})
+        let drops = room.find(FIND_DROPPED_RESOURCES)
 
-        let haulable = struct_catalog[STRUCTURE_CONTAINER]
+        //console.log('valid tombs: ' + valid_tombs.length)
+        //console.log('valid ruins: ' + valid_ruins.length)
+        //console.log('valid drops: ' + drops.length)
+
+
+        let haulable = struct_catalog[STRUCTURE_CONTAINER].concat(valid_tombs)
         let storeable = struct_catalog[STRUCTURE_SPAWN].concat(struct_catalog[STRUCTURE_EXTENSION], struct_catalog[STRUCTURE_TOWER])
 
 
