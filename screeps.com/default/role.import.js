@@ -2,17 +2,18 @@ var w_util = require('worker.utilitys')
 
 var container_min_hits = 50000
 
-var flag = Game.flags['Flag1']
 // set creep.memory.sauce on spawn
 
 var roleImport = {
     runner: function(creep){
 
+        var flag = Game.flags[creep.memory.flag]
+
         switch(creep.memory.task){
 
             case 'run':
-                if(creep.room != Game.flags['Flag1'].room ){
-                    creep.moveTo(Game.flags['Flag1'])
+                if(creep.room != flag.room ){
+                    creep.moveTo(flag, {reusePath: 15})
                 } else {
                     if(creep.store.getFreeCapacity() > 0){
                         var containers = creep.room.find(FIND_STRUCTURES, {
@@ -29,7 +30,7 @@ var roleImport = {
 
             case 'return':
                 if(creep.room != Game.getObjectById('5fc51cb068cc387a2256d7c3').room ){
-                    creep.moveTo(Game.getObjectById('5fc51cb068cc387a2256d7c3'))
+                    creep.moveTo(Game.getObjectById('5fc51cb068cc387a2256d7c3'), {reusePath: 10})
                 } else {
                     if(creep.store.getUsedCapacity() > 0){
                         var containers = creep.room.find(FIND_STRUCTURES, {
@@ -59,8 +60,8 @@ var roleImport = {
         switch(creep.memory.task){
 
             case 'run':
-                if(creep.room != Game.flags['Flag1'].room){
-                    creep.moveTo(Game.flags['Flag1']) 
+                if(creep.room != Game.getObjectById(creep.memory.sauce).room){
+                    creep.moveTo(Game.getObjectById(creep.memory.sauce)) 
                 } else {
                     creep.memory.task = 'mine'
                     creep.say('mine')

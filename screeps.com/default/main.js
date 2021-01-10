@@ -69,7 +69,11 @@ module.exports.loop = function () {
                 roleRunner.run(creep)
                 break
             case 'import_harvester':
-                roleImport.harvester(creep)
+                try{
+                    roleImport.harvester(creep)
+                } catch(err){
+                    console.log('!i_harvester error: ' + creep.name + '\n' + err)
+                }
                 break
             case 'import_runner':
                 roleImport.runner(creep)
@@ -80,12 +84,15 @@ module.exports.loop = function () {
             case 'warrior':
                 roleWarrior.bodyguard(creep)
                 break
+            case 'scout':
+                creep.moveTo(Game.flags[creep.memory.flag])
+                break
         }
         
     }
 
     try{
-        roleHauler.run_new(creep_catalog.hauler, true)
+        roleHauler.run_new(creep_catalog.hauler, false)
         //creep_catalog.hauler.forEach(creep => {
         //    roleHauler.run(creep)
         //})

@@ -49,7 +49,7 @@ var worker_utils = {
 
     single_store: function(creep, target){
         if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-            creep.moveTo(target, {visualizePathStyle: {stroke: '#ff00ff'}});
+            creep.moveTo(target, {visualizePathStyle: {stroke: '#ff00ff'}, reusePath: 2});
         }
     },
 

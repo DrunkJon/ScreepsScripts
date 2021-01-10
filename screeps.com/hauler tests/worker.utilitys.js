@@ -67,7 +67,7 @@ var worker_utils = {
     },
 
     single_haul: function(creep, target){
-        if(creep.withdraw(target, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE){
+        if(creep.withdraw(target) === ERR_NOT_IN_RANGE){
             creep.moveTo(target, {visualizePathStyle: {stroke: '#3333ff'}})
         }
     },

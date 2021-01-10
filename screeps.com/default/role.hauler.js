@@ -105,7 +105,7 @@ var roleHauler = {
         tombs.forEach( tomb => {
             if(tomb.store.getUsedCapacity() > 0){
                 valid_tombs.push(tomb)
-                console.log(tomb.id + ': ' + tomb.store.getUsedCapacity())  
+                //console.log(tomb.id + ': ' + tomb.store.getUsedCapacity())  
             } 
         })
         let valid_ruins = room.find(FIND_RUINS, {filter: (r) => r.store.getUsedCapacity() > 0})
